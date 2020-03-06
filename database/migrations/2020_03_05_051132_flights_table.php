@@ -20,6 +20,14 @@ class FlightsTable extends Migration
             $table->decimal('long', 11, 8)->nullable();
             $table->integer('duration_in_seconds');
             $table->text('notes');
+
+            // Weather/Airspace info fields
+            $table->decimal('temperature', 4, 1)->nullable();
+            $table->string('weather_summary')->nullable();
+            $table->string('airspace_color')->nullable();
+            $table->string('airspace_summary')->nullable();
+            $table->string('flight_info_hash')->nullable();
+
             $table->timestamps();
             $table->softDeletes();
         });

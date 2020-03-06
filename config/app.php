@@ -165,6 +165,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Naughtonium\LaravelDarkSky\LaravelDarkSkyServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -227,6 +228,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        // Custom Facades
+        'DarkSky' => \Naughtonium\LaravelDarkSky\Facades\DarkSky::class,
     ],
 
 ];
