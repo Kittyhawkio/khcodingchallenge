@@ -16,13 +16,13 @@ class Flight extends JsonResource
     {
         return [
             'id' => $this->id,
-            'flight_time' => (string) $this->flight_time,
+            'flight_time' => $this->flight_time->format('c'),
             'lat' => $this->lat,
             'long' => $this->long,
             'duration_in_seconds' => $this->duration_in_seconds,
             'notes' => $this->notes,
-            'created_at' => (string) $this->created_at,
-            'updated_at' => (string) $this->updated_at,
+            'created_at' => $this->created_at->format('c'),
+            'updated_at' => $this->updated_at->format('c'),
             // Flight Info Properties
             'weather_summary' => $this->weather_summary,
             'temperature' => $this->temperature,
