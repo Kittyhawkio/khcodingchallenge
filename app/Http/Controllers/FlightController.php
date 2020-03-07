@@ -88,7 +88,7 @@ class FlightController extends Controller
 
         $flight->update($request->only(['flight_time', 'lat', 'long', 'notes', 'duration_in_seconds']));
 
-        if ($flight->wasChanged('flight_info_hash')) {
+        if ($flight->wasChanged(['flight_time', 'lat', 'long'])) {
             FlightEnvironmentStatusJob::dispatchAfterResponse($flight);
         }
 
