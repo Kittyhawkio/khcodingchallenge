@@ -10,6 +10,14 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class FlightController extends Controller
 {
+    private static $validationRules = [
+        'flight_time' => 'date|required',
+        'lat' => 'nullable|numeric|between:-90,90',
+        'long' => 'nullable|numeric|between:-180,180',
+        'duration_in_seconds' => 'numeric|between:0,99999|required',
+        'notes' => 'required|string',
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -41,14 +49,7 @@ class FlightController extends Controller
      */
     public function store(Request $request)
     {
-        // The latitude must be a number between -90 and 90 and the longitude between -180 and 180.
-        $request->validate([
-            'flight_time' => 'date|required',
-            'lat' => 'nullable|numeric|between:-90,90',
-            'long' => 'nullable|numeric|between:-180,180',
-            'duration_in_seconds' => 'numeric|between:0,99999|required',
-            'notes' => 'required|string',
-        ]);
+        $request->validate(static::$validationRules);
 
         $flight = Flight::create([
             'flight_time' => $request->flight_time,
@@ -83,6 +84,8 @@ class FlightController extends Controller
      */
     public function update(Request $request, Flight $flight)
     {
+        $request->validate(static::$validationRules);
+
         $flight->update($request->only(['flight_time', 'lat', 'long', 'notes', 'duration_in_seconds']));
 
         if ($flight->wasChanged('flight_info_hash')) {
