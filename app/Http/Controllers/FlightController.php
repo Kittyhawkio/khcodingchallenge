@@ -7,6 +7,7 @@ use App\Http\Resources\Flight as FlightResource;
 use App\Jobs\FlightEnvironmentStatusJob;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Log;
 
 class FlightController extends Controller
 {
@@ -26,8 +27,15 @@ class FlightController extends Controller
      */
     public function index(Request $request)
     {
+        $range = $request->range;
+        $range = json_decode($range, true);
+        $paginate = ($range[1] - $range[0]) + 1;
+        $page = ($range[1] + 1) / $paginate;
+        $sort = $request->sort;
+        $sort = json_decode($sort, true);
+
         /** @var LengthAwarePaginator $flights */
-        $flights = Flight::paginate(10);
+        $flights = Flight::orderBy($sort[0], $sort[1])->paginate($paginate, ['*'], 'page', $page);
 
         // Headers are customized for React Admin, it expects the Content-Range for pagination
         return response($flights)

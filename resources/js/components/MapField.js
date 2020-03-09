@@ -4,45 +4,41 @@ import mapboxgl from 'mapbox-gl';
 
 // @TODO: yuck, move to dynamic secret loading?
 mapboxgl.accessToken = 'pk.eyJ1Ijoid2VzbmljayIsImEiOiJjazdlM3YyODcwMzJqM25sdTJpcWNjcGpoIn0.GXKILcEwfBi7QZnZ2SBjAw';
-//
-// const MapField = ({ props, source, record = {} }) => {
-//     console.log(source, 'source');
-//     console.log(props, 'props');
-//     let map = new mapboxgl.Map({
-//         container: this.mapContainer,
-//         style: 'mapbox://styles/mapbox/streets-v11',
-//         center: [this.state.lng, this.state.lat],
-//         zoom: this.state.zoom
-//     });
-//
-//     return (
-//         <div>
-//             <div ref={el => map = el} />
-//         </div>
-//     )
-// };
+
+const mapStyle = {
+    height: '500px',
+};
 
 class MapField extends React.Component {
 
     constructor(props) {
         super(props);
-        console.log(props, 'mapbox props');
+
+        this.mapRef = React.createRef();
         this.state = {
             lng: props.record.long,
             lat: props.record.lat,
-            zoom: 8
+            zoom: 15
         };
-        this.mapRef = React.createRef();
     }
 
     componentDidMount() {
         const { lng, lat, zoom } = this.state;
-
         const map = new mapboxgl.Map({
             container: this.mapRef.current,
             style: 'mapbox://styles/mapbox/streets-v9',
             center: [lng, lat],
             zoom
+        });
+
+        map.on('move', () => {
+            const { lng, lat } = map.getCenter();
+
+            this.setState({
+                lng: lng.toFixed(4),
+                lat: lat.toFixed(4),
+                zoom: map.getZoom().toFixed(2)
+            });
         });
 
         map.on('load', function() {
@@ -56,13 +52,13 @@ class MapField extends React.Component {
                             'geometry': {
                                 'type': 'Point',
                                 'coordinates': [
-                                    -77.03238901390978,
-                                    38.913188059745586
+                                    lng,
+                                    lat
                                 ]
                             },
                             'properties': {
-                                'title': 'Schedule Flight Point',
-                                'icon': 'drone'
+                                'title': 'Scheduled Flight Point',
+                                'icon': 'airport'
                             }
                         }
                     ]
@@ -88,13 +84,12 @@ class MapField extends React.Component {
 
     render() {
         const { lng, lat, zoom } = this.state;
-
         return (
             <div>
                 <div>
                     <div>{`Longitude: ${lng} Latitude: ${lat} Zoom: ${zoom}`}</div>
                 </div>
-                <div ref={this.mapRef} />
+                <div style={mapStyle} ref={this.mapRef} />
             </div>
         );
     }
@@ -108,7 +103,7 @@ MapField.propTypes = {
 };
 
 MapField.defaultProps = {
-    zoom: 2,
+    zoom: 15,
     lng: 40.759211117,
     lat: -73.97786381,
 };

@@ -26,6 +26,7 @@ class FlightsTable extends Migration
             $table->string('weather_summary')->nullable();
             $table->string('airspace_color')->nullable();
             $table->string('airspace_summary')->nullable();
+            $table->boolean('warning')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

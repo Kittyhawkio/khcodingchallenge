@@ -1,59 +1,66 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import MapField from "./MapField";
 
-
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     root: {
-        minWidth: 275,
+        flexGrow: 1,
     },
-    bullet: {
-        display: 'inline-block',
-        margin: '0 2px',
-        transform: 'scale(0.8)',
+    paper: {
+        padding: theme.spacing(2),
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
     },
-    title: {
-        fontSize: 14,
-    },
-    pos: {
-        marginBottom: 12,
-    },
-});
+}));
 
 const FlightWidget = ({ source, record = {} }) => {
-    console.log(record, 'flight widget');
     const classes = useStyles();
-    const bull = <span className={classes.bullet}>•</span>;
 
     return (
-        <Card className={classes.root} variant="outlined">
-            <CardContent>
-                {record.airspace_color !== 'green' &&
-                <Alert severity="error">Airspace status: {record.airspace_summary}</Alert>
-                }
-                {record.airspace_color === 'green' &&
-                <Alert severity="success"><AlertTitle>Good to go!</AlertTitle>Airspace status: {record.airspace_summary}</Alert>
-                }
-                <Typography className={classes.title} color="textSecondary" gutterBottom>
-                    {new Intl.DateTimeFormat("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "2-digit"
-                    }).format(Date.parse(record.flight_time))}
-                </Typography>
-                <Typography variant="h5" component="h2">
-                    {record.lat},{record.long}
-                </Typography>
-                <Typography className={classes.pos} color="textSecondary">
-                    Weather: {record.weather_summary} ({record.temperature}F)
-                </Typography>
-
-            </CardContent>
-        </Card>
+        <div className={classes.root}>
+            <Grid container spacing={3}>
+                <Grid item xs={6} sm={4}>
+                    <Paper className={classes.paper}>
+                        {record.airspace_color !== 'green' &&
+                        <Alert severity="error">Airspace status: {record.airspace_summary}</Alert>
+                        }
+                        {record.airspace_color === 'green' &&
+                        <Alert severity="success"><AlertTitle>Good to go!</AlertTitle>Airspace status: {record.airspace_summary}</Alert>
+                        }
+                        <Typography component="h3" variant="h3">
+                            {new Intl.DateTimeFormat("en-US", {
+                                hour: "numeric",
+                                minute: "numeric",
+                                second: "numeric"
+                            }).format(Date.parse(record.flight_time))}
+                        </Typography>
+                        <Typography component="h3" variant="h5">
+                            {new Intl.DateTimeFormat("en-US", {
+                                year: "numeric",
+                                month: "long",
+                                day: "2-digit"
+                            }).format(Date.parse(record.flight_time))}
+                        </Typography>
+                        <Typography component="h5" variant="h5">
+                            {record.lat},{record.long}
+                        </Typography>
+                        <Typography component="h4" variant="h5">
+                            Weather: {record.weather_summary} ({record.temperature}F)
+                        </Typography>
+                    </Paper>
+                </Grid>
+                <Grid item xs={6} sm={8}>
+                    <Paper className={classes.paper}>
+                        <MapField record={record} source={source}/>
+                    </Paper>
+                </Grid>
+            </Grid>
+        </div>
     );
 };
 

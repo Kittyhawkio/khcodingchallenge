@@ -13,8 +13,7 @@ export default {
             range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
             filter: JSON.stringify(params.filter),
         };
-        console.log(query);
-        const url = `${apiUrl}/${resource}`; //@TODO ?${stringify(query)}`;
+        const url = `${apiUrl}/${resource}?${stringify(query)}`;
 
         return httpClient(url).then(({ headers, json }) => ({
             data: json.data,
@@ -77,7 +76,7 @@ export default {
             method: 'POST',
             body: JSON.stringify(params.data),
         }).then(({ json }) => ({
-            data: { ...params.data, id: json.id },
+            data: { ...params.data, id: json.data.id },
         })),
 
     delete: (resource, params) =>

@@ -68,6 +68,7 @@ class FlightEnvironmentStatusJob implements ShouldQueue
 
             $this->flight->setAttribute('airspace_color', $color);
             $this->flight->setAttribute('airspace_summary', $overview);
+            $this->flight->setAttribute('warning', $color !== 'green');
 
             $this->flight->save();
 
