@@ -14,12 +14,12 @@ class GeoJSONTest extends TestCase
     public function factory_returns_a_point_object()
     {
         $geo = Factory::prep()
-            ->setCoordinates([1.2, 3.4])
+            ->setCoordinates([1.2, 3.4]) // set in lat/long
             ->get();
         $this->assertInstanceOf(Point::class, $geo);
-        [$x, $y] = $geo->getCoordinates();
-        $this->assertSame(1.2, $x);
-        $this->assertSame(3.4, $y);
+        [$long, $lat] = $geo->getCoordinates(); // retrieve in long/lat
+        $this->assertSame(3.4, $long);
+        $this->assertSame(1.2, $lat);
     }
 
     /** @test */
