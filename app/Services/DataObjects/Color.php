@@ -2,9 +2,11 @@
 
 namespace App\Services\DataObjects;
 
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
 use JsonSerializable;
 
-class Color implements JsonSerializable
+class Color implements JsonSerializable, Arrayable, Jsonable
 {
     private string $name;
     private string $hex;
@@ -35,6 +37,16 @@ class Color implements JsonSerializable
     }
 
     public function jsonSerialize()
+    {
+        return $this->toArray();
+    }
+
+    public function toJson($options = 0)
+    {
+        return json_encode($this->toArray(), $options);
+    }
+
+    public function toArray()
     {
         return [
             'name' => $this->name,

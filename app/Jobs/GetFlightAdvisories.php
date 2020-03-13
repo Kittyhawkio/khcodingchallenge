@@ -43,7 +43,7 @@ class GetFlightAdvisories implements ShouldQueue
 
         $response = $api->setGeometry($geometry)->query();
 
-        $airspace = new Airspace();
+        $airspace = $this->flight->airspace ?? new Airspace();
         $airspace->short_overview = $response->shortOverview();
         $airspace->full_overview = $response->fullOverview();
         $airspace->color = $response->color();

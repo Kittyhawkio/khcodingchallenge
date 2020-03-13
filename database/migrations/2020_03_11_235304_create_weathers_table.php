@@ -16,7 +16,7 @@ class CreateWeathersTable extends Migration
         Schema::create('weathers', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('flight_id');
-            $table->float('temperature');
+            $table->integer('temperature');
             $table->text('weather_blurb');
             $table->timestamps();
 

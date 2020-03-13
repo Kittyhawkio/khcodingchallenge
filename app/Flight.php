@@ -10,6 +10,10 @@ class Flight extends Model
 {
     use SoftDeletes;
 
+    protected $guarded = [
+        'id',
+    ];
+
     protected $casts = [
         'flight_time'         => 'datetime',
         'duration_in_seconds' => 'integer',

@@ -20,6 +20,10 @@ class Color implements CastsAttributes
     {
         $values = json_decode($value, true);
 
+        if (! isset($values['name']) && ! isset($values['hex']) && ! isset($values['rgb'])) {
+            return null;
+        }
+
         return new ColorObject($values['name'], $values['hex'], $values['rgb']);
     }
 

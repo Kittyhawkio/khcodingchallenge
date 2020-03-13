@@ -16,6 +16,8 @@ class Airspace extends Model
         'classes'    => 'array',
     ];
 
+    protected $hidden = ['flight_id', 'created_at'];
+
     public function flight(): BelongsTo
     {
         return $this->belongsTo(Flight::class);

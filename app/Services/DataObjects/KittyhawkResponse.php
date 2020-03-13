@@ -103,7 +103,7 @@ class KittyhawkResponse
     /** @return list<Advisory> */
     public function advisories(): array
     {
-        return $this->advisories;
+        return $this->advisories ?? [];
     }
 
     /** @return list<string> */
