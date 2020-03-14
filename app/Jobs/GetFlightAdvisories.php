@@ -2,12 +2,13 @@
 
 namespace App\Jobs;
 
-use App\Airspace;
 use App\Flight;
+use App\Airspace;
+use GeoJSON\Spec;
+use GeoJSON\Geometry\Factory;
 use Illuminate\Bus\Queueable;
 use App\Services\KittyhawkAPI;
-use GeoJSON\Geometry\Factory;
-use GeoJSON\Spec;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -52,5 +53,14 @@ class GetFlightAdvisories implements ShouldQueue
         $airspace->classes = $response->classes();
 
         $this->flight->airspace()->save($airspace);
+
+        Log::info(json_encode([
+            'flight_id' => $this->flight->id,
+            'latitude' => $this->flight->lat,
+            'longitude' => $this->flight->long,
+            'short_overview' => $response->shortOverview(),
+            'full_overview' => $response->fullOverview(),
+            'color' => $response->color(),
+        ]));
     }
 }

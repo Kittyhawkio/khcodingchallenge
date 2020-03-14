@@ -10,6 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class GetFlightWeather implements ShouldQueue
 {
@@ -39,10 +40,18 @@ class GetFlightWeather implements ShouldQueue
             ->timeMachine($this->flight->flight_time->toISOString())
             ->currently();
 
-        $flightWeather = new Weather();
+        $flightWeather = $this->flight->weather ?? new Weather();
         $flightWeather->temperature = $weather->temperature();
         $flightWeather->weather_blurb = $weather->summary();
 
         $this->flight->weather()->save($flightWeather);
+
+        Log::info(json_encode([
+            'flight_id' => $this->flight->id,
+            'latitude' => $this->flight->lat,
+            'longitude' => $this->flight->long,
+            'temperature' => $weather->temperature(),
+            'weather_blurb' => $weather->summary(),
+        ]));
     }
 }
