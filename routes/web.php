@@ -14,4 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::redirect('/', '/flights');
+
 Route::resource('flights', FlightController::class);
