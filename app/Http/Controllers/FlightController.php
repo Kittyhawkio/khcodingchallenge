@@ -19,12 +19,16 @@ class FlightController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->acceptsJson()) {
-            return FlightResource::collection(Flight::paginate());
+        $flights = Flight::query()
+            ->with('airspace', 'weather')
+            ->paginate();
+
+        if ($request->expectsJson()) {
+            return FlightResource::collection($flights);
         }
 
         // handle view
-        return view('flight.index', ['flights' => Flight::paginate()]);
+        return view('flight.index', ['flights' => $flights]);
     }
 
     /**
@@ -62,13 +66,13 @@ class FlightController extends Controller
         GetFlightWeather::dispatch($flight);
         GetFlightAdvisories::dispatch($flight);
 
-        if ($request->acceptsJson()) {
+        if ($request->expectsJson()) {
             return (new FlightResource($flight))
                 ->response()
                 ->setStatusCode(201);
         }
 
-        return redirect('/flight/' . $flight->id);
+        return redirect("/flights/{$flight->id}");
     }
 
     /**
@@ -118,10 +122,10 @@ class FlightController extends Controller
         GetFlightWeather::dispatch($flight);
         GetFlightAdvisories::dispatch($flight);
 
-        if ($request->acceptsJson()) {
+        if ($request->expectsJson()) {
             return new FlightResource($flight);
         }
 
-        return redirect('/flight/edit');
+        return redirect("/flights/{$flight->id}");
     }
 }
