@@ -1,0 +1,41 @@
+<?php
+
+$finder = PhpCsFixer\Finder::create()
+    ->in(__DIR__ . '/app')
+    ->in(__DIR__ . '/GeoJSON')
+    ->in(__DIR__ . '/config')
+    ->in(__DIR__ . '/tests');
+
+return PhpCsFixer\Config::create()
+    ->setRiskyAllowed(true)
+    ->setRules([
+        '@PSR2'                               => true,
+        'strict_param'                        => true,
+        'array_syntax'                        => ['syntax' => 'short'],
+        'constant_case'                       => ['case' => 'lower'],
+        'concat_space'                        => ['spacing' => 'one'],
+        'ereg_to_preg'                        => true,
+        'logical_operators'                   => true,
+        'not_operator_with_successor_space'   => true,
+        'no_useless_return'                   => true,
+        'no_useless_else'                     => true,
+        'no_unused_imports'                   => true,
+        'phpdoc_align'                        => false,
+        'phpdoc_add_missing_param_annotation' => true,
+        'psr4'                                => true,
+        'single_quote'                        => true,
+        'static_lambda'                       => true,
+        'blank_line_before_return'            => true,
+        'binary_operator_spaces'              => [
+            'operators' => [
+                '=>' => 'align',
+            ],
+        ],
+        'no_trailing_comma_in_singleline_array' => true,
+        'trailing_comma_in_multiline_array'     => true,
+        'array_indentation'                     => true,
+        'list_syntax'                           => ['syntax' => 'short'],
+        'no_whitespace_in_blank_line'           => true,
+    ])
+    ->setCacheFile(__DIR__ . '/.php_cs.cache')
+    ->setFinder($finder);
