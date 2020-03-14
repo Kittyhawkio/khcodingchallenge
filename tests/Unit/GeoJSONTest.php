@@ -34,4 +34,18 @@ class GeoJSONTest extends TestCase
 
         $this->assertInstanceOf(Collection::class, $collection);
     }
+
+    /** @test */
+    function point_can_be_converted_to_json_or_array()
+    {
+        /** @var \GeoJSON\Geometry\Point */
+        $point = Factory::prep()
+            ->setCoordinates([1.2, 3.4])
+            ->get();
+
+        $this->assertJson($point->toJson());
+        $this->assertJson((string)$point);
+        $this->assertIsArray($point->toArray());
+        $this->assertArrayHasKey('coordinates', $point->toArray());
+    }
 }
