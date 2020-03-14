@@ -132,6 +132,33 @@ class FlightApiTest extends TestCase
             ]);
     }
 
+    /**
+     * @test
+     * @dataProvider validationProvider
+     */
+    function it_has_validation_for_update(float $lat, float $long, string $date)
+    {
+        $flight = factory(Flight::class)->create();
+        factory(Weather::class)->create(['flight_id' => $flight->id]);
+        factory(Airspace::class)->create(['flight_id' => $flight->id]);
+
+        $this->json('PUT', "/flights/{$flight->id}", [
+            'latitude' => $lat,
+            'longitude' => $long,
+            'date' => $date,
+        ])->assertStatus(422);
+    }
+
+    /** @test */
+    function it_has_no_required_validation_for_update()
+    {
+        $flight = factory(Flight::class)->create();
+        factory(Weather::class)->create(['flight_id' => $flight->id]);
+        factory(Airspace::class)->create(['flight_id' => $flight->id]);
+
+        $this->json('PUT', "/flights/{$flight->id}", [])->assertStatus(200);
+    }
+
     public function validationProvider(): array
     {
         return [
