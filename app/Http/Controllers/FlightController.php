@@ -84,7 +84,7 @@ class FlightController extends Controller
      */
     public function show(Request $request, Flight $flight)
     {
-        if ($request->ajax()) {
+        if ($request->expectsJson()) {
             return new FlightResource($flight);
         }
 

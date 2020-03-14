@@ -59,6 +59,29 @@ class FlightApiTest extends TestCase
     }
 
     /** @test */
+    function it_can_show_a_flight()
+    {
+        $flight = factory(Flight::class)->create();
+        $weather = factory(Weather::class)->create(['flight_id' => $flight->id]);
+        $airspace = factory(Airspace::class)->create(['flight_id' => $flight->id]);
+
+        $this->json('GET', "/flights/{$flight->id}")
+            ->assertStatus(200)
+            ->assertJson([
+                'data' => [
+                    'id' => $flight->id,
+                    'latitude' => $flight->lat,
+                    'longitude' => $flight->long,
+                    'notes' => $flight->notes,
+                    'airspace' => [
+                        'short_overview' => $airspace->short_overview,
+                        'full_overview' => $airspace->full_overview,
+                    ],
+                ],
+            ]);
+    }
+
+    /** @test */
     function it_can_create_a_new_flight()
     {
         $this->json('POST', '/flights', [
