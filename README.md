@@ -15,7 +15,7 @@ For this challenge, please use the following base tools:
 ## User Stories
 
 1) As a user, I should be able to create and edit a flight from a website. If I enter in incorrect data, I should be notified. For example, the latitude must be a number between -90 and 90 and the longitude between -180 and 180. Or for example, there is no year -2000.
-2)  As a user, I should be able to view a flight on a website. That should include a map, time, latitude, longitude, temperature, and a simple weather string ie, "Sunny" or "Partly Cloudy" (Available from the DarkSky API). 
+2) As a user, I should be able to view a flight on a website. That should include a map, time, latitude, longitude, temperature, and a simple weather string ie, "Sunny" or "Partly Cloudy" (Available from the DarkSky API). 
 3) After a flight log has been created, my flight should asynchronously fetch the weather and airspace for the flight.
 4) After logging a flight, I should know (A simple Boolean in your flight table called `warning` will do) if my flight happened inside of a TFR (Temporary Flight Restriction AKA NO FLY ZONE), according to Kittyhawk Airspace. 
 5) If I change the location or time/date of a flight, the system should automatically update the weather and airspace for that new location.
@@ -48,6 +48,7 @@ We like http://Mapbox.com but you're free to use anything you'd like.
 Submit a GeoJSON point and receive a full JSON listing of advisories that affect this. 
 
 **Endpoint:** `POST`  https://app.kittyhawk.io/api/atlas/advisories
+Request URL: https://app.kittyhawk.io/api/account/154427/atlas/advisories
 Sample Body For Endpoint:
 
     {
@@ -70,4 +71,5 @@ The API returns a list of advisories along with a color. Red is restricted. Blue
 
 ## Oh Sh!T, WTFBBQ This isnt working like I thought.
 If you have problems, please feel free to reach out to Josh. 
+
 
